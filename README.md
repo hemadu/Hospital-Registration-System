@@ -1,7 +1,7 @@
 # Hospital-Registration-System
 # Idea/JavaWeb
 # Backend：Spring+SpringMVC+Mybatis
-# Frontend ：Bootstrap jquery
+# Frontend ：Bootstrap
 # Environment
 Windows10/
 Mysql	5.7.25/
