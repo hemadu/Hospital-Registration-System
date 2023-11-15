@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dao.NoMapper">
+  <resultMap id="BaseResultMap" type="cn.entity.No">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="date" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="time" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="did" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="pid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="price" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="state" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="isdel" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+    <association property="person" column="pid" select="cn.dao.PersonMapper.selectByPrimaryKey">
+    </association>
+    <association property="doctor" column="did" select="cn.dao.DoctorMapper.selectByPrimaryKey">
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, date, time, did, pid, price, state, isdel
+  </sql>
+  <sql id="Base_Column_NewList">
+    n.id, n.time, n.did, n.pid, n.price, n.state, n.isdel
+  </sql>
+
+
+<select id="getSum1"  resultType="map">
+SELECT COUNT(1)AS'num'  FROM `no` WHERE state in (1,2) AND date=#{date};
+  </select>
+  <select id="getSum2"  resultType="map">
+SELECT COUNT(1)AS'num' FROM `no` WHERE state=2 AND date=#{date};
+  </select>
+  <select id="getSum3"  resultType="map">
+SELECT COUNT(1)AS'num',s.name AS name FROM `no` n,sector s,doctor d WHERE n.state in (1,2) AND n.did=d.id AND d.sid=s.id AND n.date=#{date} GROUP BY s.id;
+  </select>
+  <select id="getSum4"  resultType="map">
+SELECT COUNT(1)AS'num',s.name AS name FROM `no` n,sector s,doctor d WHERE n.state=2 AND n.did=d.id AND d.sid=s.id AND n.date=#{date} GROUP BY s.id;
+  </select>
+  <select id="getSum5"  resultType="map">
+SELECT COUNT(1)AS'num' FROM `no` n,doctor d WHERE n.state in (1,2) AND n.did=d.id  AND n.date=#{date} AND d.type=1;
+  </select>
+  <select id="getSum6"  resultType="map">
+SELECT COUNT(1)AS'num' FROM `no` n,doctor d WHERE n.state=2 AND n.did=d.id  AND n.date=#{date} AND d.type=1;
+  </select>
+
+  <select id="getByDid"  resultType="java.lang.Integer">
+    select
+    COUNT(1)
+    from `no` n
+    <where>
+      and n.isdel=0
+      and n.state  in(1,2)
+      <if test=" did!=null  and did!=0">
+        and  n.did=#{did}
+      </if>
+      <if test=" time!=null  and time!=0">
+        and n.time=#{time}
+      </if>
+      <if test=" date!=null">
+        and n.date=#{date}
+      </if>
+    </where>
+  </select>
+
+  <select id="getByMap"  resultMap="BaseResultMap">
+    select
+    *
+    from `no` n
+    <if test=" did!=null  and did!=0">
+      ,person p
+    </if>
+
+    <if test=" pid!=null  and pid!=0">
+      ,sector s,doctor d
+    </if>
+
+    <where>
+      and n.isdel=0
+      <if test="state!=null">
+        and n.state=#{state}
+      </if>
+
+      <if test=" did!=null  and did!=0">
+        and n.pid=p.id  and n.did=#{did}
+        <if test=" name!=null  and name!=''">
+          and p.name like '%${name}%'
+        </if>
+      </if>
+
+      <if test=" pid!=null  and pid!=0">
+        and n.did=d.id and s.id=d.sid and n.pid=#{pid}
+        <if test=" name!=null  and name!=''">
+          and d.name like '%${name}%'
+        </if>
+        <if test=" sid!=null and sid!=0">
+          and d.sid=s.id and d.sid=#{sid}
+        </if>
+        <if test=" type!=null ">
+          and d.type =#{type}
+        </if>
+      </if>
+
+      <if test=" time!=null  and time!=0">
+        and n.time=#{time}
+      </if>
+      <if test=" date!=null">
+        and n.date=#{date}
+      </if>
+    </where>
+    order by n.date
+    <if test=" pid!=null  and pid!=0">
+      DESC
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    *
+    from `no` n
+    where n.id = #{id,jdbcType=INTEGER} and n.isdel=0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from no
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <update id="delete" parameterType="java.lang.Integer">
+    update no set isdel=1 where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="insert" parameterType="cn.entity.No">
+    insert into no (id, date, time, 
+      did, pid, price, state, 
+      isdel)
+    values (#{id,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{time,jdbcType=INTEGER}, 
+      #{did,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER}, 
+      #{isdel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.entity.No">
+    insert into no
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="did != null">
+        did,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="isdel != null">
+        isdel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=INTEGER},
+      </if>
+      <if test="did != null">
+        #{did,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.entity.No">
+    update no
+    <set>
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="did != null">
+        did = #{did,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isdel != null">
+        isdel = #{isdel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.entity.No">
+    update no
+    set date = #{date,jdbcType=DATE},
+      time = #{time,jdbcType=INTEGER},
+      did = #{did,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=INTEGER},
+      price = #{price,jdbcType=DOUBLE},
+      state = #{state,jdbcType=INTEGER},
+      isdel = #{isdel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
