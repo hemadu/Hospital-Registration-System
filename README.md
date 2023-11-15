@@ -1,6 +1,13 @@
 # Hospital-Registration-System
 # Idea/JavaWeb
-
+# Backend：Spring+SpringMVC+Mybatis
+# Frontend ：Bootstrap jquery
+# Environment
+Windows10/
+Mysql	5.7.25/
+Jbk	1.8.0-181/
+Tomcat	8.5.45/
+Idea	4.4.2
 # Doctor appointment interface
 ![image](https://github.com/hemadu/Hospital-Registration-System/assets/111234410/85b2a719-ef41-4495-9a11-6eef287bc06b)
 # Confirm appointment time
