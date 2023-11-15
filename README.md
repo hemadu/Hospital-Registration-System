@@ -24,6 +24,8 @@ Idea	4.4.2
 ![image](https://github.com/hemadu/Hospital-Registration-System/assets/111234410/584c56f7-7203-4925-a334-dbfeea144c48)
 # Upload successful
 ![image](https://github.com/hemadu/Hospital-Registration-System/assets/111234410/e1f60d3e-08d7-443f-b0d5-1d455fedf2e2)
+# Statistics on attendance and non-attendance rates
+![image](https://github.com/hemadu/Hospital-Registration-System/assets/111234410/16e9a6a9-de3b-470e-b59d-a2b03ea34d0e)
 # Information management for doctors’ departments
 ![image](https://github.com/hemadu/Hospital-Registration-System/assets/111234410/4f8f9537-f49f-47ab-bd92-fb5b46c09d3e)
 
