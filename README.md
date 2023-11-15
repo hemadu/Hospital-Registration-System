@@ -2,7 +2,7 @@
 # Idea/JavaWeb
 
 # Doctor appointment interface
-![image](https://github.com/hemadu/Hospital-Registration-System/assets/111234410/98dfc81b-83ba-4ab2-bf2c-6d8d5418fe1f)
+![image](https://github.com/hemadu/Hospital-Registration-System/assets/111234410/85b2a719-ef41-4495-9a11-6eef287bc06b)
 # Confirm appointment time
 ![image](https://github.com/hemadu/Hospital-Registration-System/assets/111234410/bafd1f15-7b0b-4689-b49e-26380e782d5c)
 # Announcement interface
